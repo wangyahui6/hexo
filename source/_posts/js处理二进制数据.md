@@ -1,6 +1,7 @@
 ---
 title: js处理二进制数据
 date: 2017-01-10 11:34:43
+categories: web前端
 tags: javascript
 ---
 ## 二进制数据
