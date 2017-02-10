@@ -35,6 +35,7 @@ Cache-Control: max-age = 300设置资源的过期时间为5分钟。浏览器再
 - no-cache,不判断强缓存，每次都需要向浏览器发送请求，进行协商缓存判断
 - public,指示响应可被任何缓存区缓存
 - private,通常只为单个用户缓存，不允许任何共享缓存对其进行缓存,通常用于用户个人信息
+
 ## 协商缓存
 协商缓存的判断在服务器端进行，判断是否命中的依据就是这次请求和上次请求之间资源是否发生改变。未发生改变命中，发生改变则未命中。判断文件是否发生改变的方法有两个：**Last-Modified、If-Modified-Since**和**Etag、If-None-Match**。
 ### Last-Modified、If-Modified-Since
