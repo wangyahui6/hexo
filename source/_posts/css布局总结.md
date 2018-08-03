@@ -91,7 +91,7 @@ box-sizing的这两个属性，造成width、height的二义性，而且很多�
 
 - 加入要全局设置box-sizing: border-box，要注意对第三方组件库的侵入，因为第三方组件很可能是基于content-box来布局的
 - 设置所有元素的box-sizing属性为inherit：
-    ```
+    ```css
     *, *:before, *:after {
         box-sizing: inherit;
     }
@@ -138,7 +138,7 @@ box-sizing的这两个属性，造成width、height的二义性，而且很多�
 当margin-left和margin-right同时为auto，就会平分剩余空间，这就是`margin:auto`会使元素水平居中的原因。然后`margin: auto`却不能使元素垂直居中，这是因为在垂直方向上，块级元素不会自动扩充，它的外部尺寸没有自动充满父元素，也没有剩余空间可说。如果我们在父元素上设置`writing-mode: vertical-lr`,这时`margin:auto`就会使子元素垂直居中，而水平居中无效。
 
 那有没有什么办法使用`margin:auto`让元素同时水平垂直居中？答案是有的，就是绝对定位的情况下。
-```
+```css
 .father {
     width: 300px; height:150px;
     position: relative;
@@ -162,7 +162,7 @@ margin对元素的影响有2个：
 ###### 影响元素内部尺寸
 
 块级元素这种宽度方向自动充满空间的布局特性，当没有设置宽度，设置margin-left和margin-right为对元素的内部空间有影响。margin为正值时，`元素尺寸`缩小；margin为负值时，`元素尺寸`增大。因为元素的外部尺寸大小已经定了，就是其包含块的尺寸，而`外部尺寸`等于`元素尺寸`加上margin，如果margin为负，`元素尺寸`自然就增大了。利用内部尺寸增大、外部尺寸不变这个特点，我们可以进行等间隔列表的布局。比如我们实现一个一行三列，两侧无间隙，中间间隙为20px的布局：
-```
+```css
 .father{
     margin-right: -20px;
 }
@@ -202,7 +202,7 @@ margin合并的计算规则
 
 这个名字是张鑫旭大神定义的，在W3C规范中也是可以找到根据的。在《CSS世界》这本书中，为了证明幽灵空白节点的存在，举了一个例子：
 
-```
+```css
 div {
     background-color: #cd0000;
 }
@@ -213,7 +213,7 @@ span {
 ```
 你可能猜到了，div的高度不为0，我在chrome下试了试高度为21px，这个高度猜测应该和div的字体、字体大小、行高有关。这个幽灵空白节点的存在，会引起一些怪异现象，比如：
 
-```
+```css
 <div><img></img></div>
 ```
 div的高度总是比img高一些，img下总有一个间距。这也是一个幽灵空白节点在起作用。
@@ -226,7 +226,7 @@ line-height翻译过来就是行高。它指的是指`行框`的高。那什么�
 line-height就是指定行框占据的高度。只有形成了行框，line-height才会起作用。
 
 这里可能有一些容易误解的情况，比如：
-```
+```css
 .father{
     line-height: 300px;
 }
@@ -252,7 +252,7 @@ vertical-align用来设置内联元素或者内联块级元素在行框内的对
 ![基线](/images/css_layout/baseline.png)
 
 vertical-align默认是基线对齐的，基线的位置很重要。而基线的定义是：`字母x的下边缘`。中线的位置是基线往上 1/2 x-height 高度，就是x交叉的地方。这里有一个需要注意的地方是，纯文字的中线是x交叉的地方，但是内联元素的中线却是内联元素的正中间位置。我们来看一个例子：
-```
+```css
 div{
   line-height: 100px;
   background: yellow;
@@ -278,7 +278,7 @@ div{
 
 - 单行居中
 
-```
+```css
 div{
     line-height: 任意值
 }
@@ -286,7 +286,7 @@ div{
 ```
 - 父元素定高垂直居中，这个在.box上设置line-height实际上设置了幽灵空白节点的行高是120px，然后.content和幽灵空白节点middle对齐就实现了垂直居中。
 
-```
+```css
 .box {
     line-height: 120px;
     background-color: #f0f3f9;
@@ -303,7 +303,7 @@ div{
 ```
 - 父元素不定高垂直居中,原理其实和父元素定高情况相同，但是因为不定高，你没法设置父元素的line-height,这时候我们可以设置一个父元素的伪元素，设置成高度100%，vertical:middle,因为元素是从左上向下排列，所以vertical:middle会把幽灵空白节点的x拉到父元素垂直中心位置。这时候，我们再设置子元素的vertical-align:middle就达到了目的。
 
-```
+```css
 .container {
     position: fixed;
     top: 0; right: 0; bottom: 0; left: 0;
@@ -372,7 +372,7 @@ clearfix在mdn上的解释为指定一个元素是否可以在它之前的浮动
 - both: 清除左右浮动
 
 一般情况下采用clearfix: both。清除浮动一个重要应用就是解决float高度塌陷的问题。通用的解决方案是设置.clearfix类：
-```
+```css
 .clearfix {
     display: block;
     zoom: 1;
