@@ -2,8 +2,7 @@
 title: flex设计思想和语法简介
 categories: 前端 css flex
 tags: css flex 弹性布局
-description: >-
-  flex弹性盒子模型是新一代的布局模式，在大部分情况下可以完全替代之前的display属性 + position属性 +
+description: flex弹性盒子模型是新一代的布局模式，在大部分情况下可以完全替代之前的display属性 + position属性 +
   float属性的布局方式，设计友好，目前兼容性已经很好了，很多主流网站都已经开始采用。本文总结一下flex的设计思想和语法，以及在实际的布局应用中为我们带来了哪些便利。
 date: 2018-10-22 10:13:19
 ---
