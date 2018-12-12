@@ -1,7 +1,7 @@
 ---
 layout: drafts
 title: Promise解析和实现
-description: Promise因为它的调用方式使得异步操作清晰简单，是现在异步操作的主要方式。Promise的使用和实现是面试中的高频问点。这骗文章主要解析Promise规范和我自己的一版实现方式。
+description: Promise因为它的调用方式使得异步操作清晰简单，是现在异步操作的主要方式。Promise的使用和实现是面试中的高频问点。这篇文章主要解析Promise规范和一版实现方式。
 date: 2018-12-10 17:44:11
 tags: js 前端
 categories: 前端
@@ -9,14 +9,14 @@ categories: 前端
 
 ### PromiseA+规范
 
-了解Promise首先我们要清楚Promise规范的内容，规范规定了Promise的行为和调用方式。[这里是规范原文](https://promisesaplus.com/)。下面是加上自己理解翻译总结：
+了解Promise首先我们要清楚Promise规范的内容，规范规定了Promise的行为和调用方式。[这里是规范原文](https://promisesaplus.com/)。下面是翻译总结：
 
-一个Promise主要代表了一个异步操作的最终结果。与Promise交互的主要方式是通过promise实例的`then`方法注册回调函数。回调函数分为两种，一种接受异步操作成功时的回调，接受异步操作返回值为参数；第二种是异步操作失败时的回调，接受异步操作失败原因为操作。规范主要是详细描述了`then`方法的实现细节。
+一个Promise主要代表了一个异步操作的最终结果。与Promise交互的主要方式是通过promise实例的`then`方法注册回调函数。回调函数分为两种，一种接受异步操作成功时的回调，接受异步操作结果值作为参数；第二种是异步操作失败时的回调，接受异步操作失败原因为参数。规范主要是详细描述了`then`方法的实现细节。
 
 主要要求如下：
 
 #### 状态
- 一个promise必须处于这3中状态之中：`pending`、`fullfilled`、`rejected`
+ 一个promise必须处于这3种状态之中：`pending`、`fullfilled`、`rejected`
   - `pending`: 可以转换到`fullfilled`或者`rejected`状态
   - `fullfilled`: 不能转换到任何状态且有一个不可变的结果值
   - `rejected`: 不能转换到任何状态且有一个不可变的失败原因
@@ -65,7 +65,7 @@ promise.then(onFulfilled, onRejected)
 
 #### The Promise Resolution Procedure
 
-  `promise resolution procedure`表示为`[[Resolve]](promise, x)`,是一个接受一个promise和一个值作为参数的抽象操作。如果一个函数是一个`thenable`（`thenable`表示有`then`方法的对象或者函数），则它试图使`promise`采用`x`的状态。这里对于`thenable`使Promise更加通用，能够兼容之前并不符合规范但是有合理`then`方法的异步实现。
+  `promise resolution procedure`表示为`[[Resolve]](promise, x)`,是一个接受一个promise和一个值作为参数的抽象操作。如果一个函数是一个`thenable`（`thenable`表示有`then`方法的对象或者函数），则它试图使`promise`采用`x`的状态。这里对于`thenable`的处理使Promise更加通用，能够兼容之前并不符合规范但是有合理`then`方法的异步实现。
 
   为了运行`[[Resolve]](promise, x)`，需要执行以下步骤：
 
@@ -76,7 +76,7 @@ promise.then(onFulfilled, onRejected)
     - 如果在获取`x.then`的过程中抛出异常`e`,`promise`以`e`作为失败原因变成`rejected`状态
     - 如果`then`是一个函数，以`x`作为它的`this`调用它，第一个参数为`resolvePromise`，第二个参数为`rejectPromise`:
       - 如果`resolvePromise`以参数`y`被调用的话，则执行`[[Resolve]](promise, y)`
-      - 如果`rejectPromise`以参数`r`被调用的话,则以`r`作为失败原因使``变成`rejected`状态
+      - 如果`rejectPromise`以参数`r`被调用的话,则以`r`作为失败原因使`promise`变成`rejected`状态
       - 如果`resolvePromise`和`rejectPromise`都被调用了，或者以同样的参数被调用多次，则以第一次调用为准，忽略之后的调用
       - 如果调用`then`时抛出一个异常`e`:
         - 如果`resolvePromise`或`rejectPromise`被调用了，则忽略
